@@ -1,0 +1,92 @@
+version: "3.8"
+services:
+  dhmin_server:
+    image: dhmin/server 
+    build:
+      context: ./server
+      args: 
+        HTTP_PROXY: $http_proxy
+        HTTPS_PROXY: $http_proxy
+    container_name: server
+    volumes:
+      - dhmin_logs:/src/logs
+    networks: 
+      - dhmin-networks
+
+# プレイヤー1のクライアントの設定
+  dhmin_player1:
+    image: dhmin/player1
+    build: 
+      context: ./client/default # 使用するクライアントプログラムのあるフォルダを指定
+      args: # ビルドに使用する環境変数とかを指定
+        HTTP_PROXY: $http_proxy
+        HTTPS_PROXY: $http_proxy
+    container_name: player1
+    depends_on: 
+      - dhmin_server
+    networks: 
+      - dhmin-networks
+
+# プレイヤー2のクライアントの設定
+  dhmin_player2:
+    image: dhmin/player2
+    build: 
+      context: ./client/default # 使用するクライアントプログラムのあるフォルダを指定
+      args: 
+        HTTP_PROXY: $http_proxy
+        HTTPS_PROXY: $http_proxy
+    container_name: player2
+    depends_on: 
+      - dhmin_server
+    networks: 
+      - dhmin-networks
+
+# プレイヤー3のクライアントの設定
+  dhmin_player3:
+    image: dhmin/player3
+    build: 
+      context: ./client/default # 使用するクライアントプログラムのあるフォルダを指定
+      args: 
+        HTTP_PROXY: $http_proxy
+        HTTPS_PROXY: $http_proxy
+    container_name: player3
+    depends_on: 
+      - dhmin_server
+    networks: 
+      - dhmin-networks
+
+# プレイヤー4のクライアントの設定
+  dhmin_player4:
+    image: dhmin/player4
+    build: 
+      context: ./client/default # 使用するクライアントプログラムのあるフォルダを指定
+      args: 
+        HTTP_PROXY: $http_proxy
+        HTTPS_PROXY: $http_proxy
+    container_name: player4
+    depends_on: 
+      - dhmin_server
+    networks: 
+      - dhmin-networks
+
+# プレイヤー5のクライアントの設定
+  dhmin_player5:
+    image: dhmin/player5
+    build: 
+      context: ./client/default # 使用するクライアントプログラムのあるフォルダを指定
+      args: 
+        HTTP_PROXY: $http_proxy
+        HTTPS_PROXY: $http_proxy
+    container_name: player5
+    depends_on: 
+      - dhmin_server
+    networks: 
+      - dhmin-networks
+networks: 
+  dhmin-networks:
+    name: dhmin-networks
+    
+volumes: 
+  dhmin_logs:
+    name: dhmin_logs
+    driver: local
