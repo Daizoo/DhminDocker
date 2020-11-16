@@ -3,13 +3,14 @@ LABEL maintainer="Hideyuki Sawahata <sawahata@uec.ac.jp>"
 # プロキシ情報受け取り
 ARG HTTP_PROXY
 ARG HTTPS_PROXY
+ARG HOSTNAME
 # インストール時にタイムゾーンを聞かれるとimageのビルドが止まってしまうのでこれで回避
 ENV DEBIAN_FRONTEND noninteractive
 ENV http_proxy=${HTTP_PROXY}
 ENV https_proxy=${HTTPS_PROXY}
 # ディスプレイサーバーのディスプレイ番号を指定
 # リモートでコンテナを起動するならともかく、ホストPCで動かすならこれで恐らく動くはず
-ENV DISPLAY=host.docker.internal:0.0
+#ENV DISPLAY=${HOSTNAME}:0
 # 大貧民サーバーをビルドするのに(恐らく)必要なパッケージ群
 # フォント関連はホスト側で補完するため、コンテナ側には必要ないが、
 # ビルド時にチェックされるらしいので入れる
@@ -19,13 +20,15 @@ RUN apt-get -y update && \
     dbus-x11 \ 
     libxaw7-dev \
     gcc make \
-    gsfonts-x11
+    gsfonts-x11 \
+    autoconf automake libtool
 
 RUN fc-cache -fv
 # サーバーに必要なファイル群をコピー
 COPY ./server /
 
 ## サーバービルド
+RUN autoreconf -f -i
 RUN ./configure && make
 # コンテナ作成時に実行するためのコマンド
 WORKDIR /src

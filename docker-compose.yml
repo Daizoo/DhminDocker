@@ -5,11 +5,14 @@ services:
     build:
       context: ./server
       args: 
-        HTTP_PROXY: $http_proxy
-        HTTPS_PROXY: $http_proxy
+        HTTP_PROXY: "${http_proxy}"
+        HTTPS_PROXY: "${http_proxy}"
+    environment: 
+      DISPLAY: "${HOST}:0"
     container_name: server
     volumes:
       - dhmin_logs:/src/logs
+      - ~/.Xauthority:/root/.Xauthority
     networks: 
       - dhmin-networks
 
@@ -19,8 +22,8 @@ services:
     build: 
       context: ./client/default # 使用するクライアントプログラムのあるフォルダを指定
       args: # ビルドに使用する環境変数とかを指定
-        HTTP_PROXY: $http_proxy
-        HTTPS_PROXY: $http_proxy
+        HTTP_PROXY: "${http_proxy}"
+        HTTPS_PROXY: "${http_proxy}"
     container_name: player1
     depends_on: 
       - dhmin_server
@@ -33,8 +36,8 @@ services:
     build: 
       context: ./client/default # 使用するクライアントプログラムのあるフォルダを指定
       args: 
-        HTTP_PROXY: $http_proxy
-        HTTPS_PROXY: $http_proxy
+        HTTP_PROXY: "${http_proxy}"
+        HTTPS_PROXY: "${http_proxy}"
     container_name: player2
     depends_on: 
       - dhmin_server
@@ -47,8 +50,8 @@ services:
     build: 
       context: ./client/default # 使用するクライアントプログラムのあるフォルダを指定
       args: 
-        HTTP_PROXY: $http_proxy
-        HTTPS_PROXY: $http_proxy
+        HTTP_PROXY: "${http_proxy}"
+        HTTPS_PROXY: "${http_proxy}"
     container_name: player3
     depends_on: 
       - dhmin_server
@@ -61,8 +64,8 @@ services:
     build: 
       context: ./client/default # 使用するクライアントプログラムのあるフォルダを指定
       args: 
-        HTTP_PROXY: $http_proxy
-        HTTPS_PROXY: $http_proxy
+        HTTP_PROXY: "${http_proxy}"
+        HTTPS_PROXY: "${http_proxy}"
     container_name: player4
     depends_on: 
       - dhmin_server
@@ -75,8 +78,8 @@ services:
     build: 
       context: ./client/default # 使用するクライアントプログラムのあるフォルダを指定
       args: 
-        HTTP_PROXY: $http_proxy
-        HTTPS_PROXY: $http_proxy
+        HTTP_PROXY: "${http_proxy}"
+        HTTPS_PROXY: "${http_proxy}"
     container_name: player5
     depends_on: 
       - dhmin_server

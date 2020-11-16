@@ -10,8 +10,8 @@ ENV https_proxy=${HTTPS_PROXY}
 
 RUN mkdir client
 COPY ./src/* /client/
-COPY ./wait-for-it.sh /client/
-RUN apt-get update -y && apt-get install -y gcc make
+RUN apt-get update -y && apt-get install -y gcc make autoconf automake libtool
 WORKDIR /client
+#RUN autoreconf -f -i
 RUN ./configure && make
 CMD sleep 10; ./client -h server -p 42485
