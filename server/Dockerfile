@@ -9,7 +9,6 @@ ENV http_proxy=${HTTP_PROXY}
 ENV https_proxy=${HTTPS_PROXY}
 # ディスプレイサーバーのディスプレイ番号を指定
 # リモートでコンテナを起動するならともかく、ホストPCで動かすならこれで恐らく動くはず
-ENV DISPLAY=host.docker.internal:0.0
 # 大貧民サーバーをビルドするのに(恐らく)必要なパッケージ群
 # フォント関連はホスト側で補完するため、コンテナ側には必要ないが、
 # ビルド時にチェックされるらしいので入れる
@@ -19,7 +18,8 @@ RUN apt-get -y update && \
     dbus-x11 \ 
     libxaw7-dev \
     gcc make \
-    gsfonts-x11
+    gsfonts-x11 \
+    autoconf automake libtool
 
 RUN fc-cache -fv
 # サーバーに必要なファイル群をコピー
@@ -29,4 +29,5 @@ COPY ./server /
 RUN ./configure && make
 # コンテナ作成時に実行するためのコマンド
 WORKDIR /src
+ENV DISPLAY=:1
 CMD [ "./tndhms" ]
