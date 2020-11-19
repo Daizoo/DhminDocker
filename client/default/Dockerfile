@@ -10,7 +10,6 @@ ENV https_proxy=${HTTPS_PROXY}
 
 RUN mkdir client
 COPY ./src/* /client/
-COPY ./wait-for-it.sh /client/
 RUN apt-get update -y && apt-get install -y gcc make
 WORKDIR /client
 RUN ./configure && make

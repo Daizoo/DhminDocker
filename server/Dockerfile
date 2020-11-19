@@ -19,13 +19,15 @@ RUN apt-get -y update && \
     dbus-x11 \ 
     libxaw7-dev \
     gcc make \
-    gsfonts-x11
+    gsfonts-x11 \
+    autoconf automake libtool
 
 RUN fc-cache -fv
 # サーバーに必要なファイル群をコピー
 COPY ./server /
 
 ## サーバービルド
+RUN autoreconf -f -i
 RUN ./configure && make
 # コンテナ作成時に実行するためのコマンド
 WORKDIR /src
